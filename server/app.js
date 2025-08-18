@@ -1,5 +1,5 @@
 import express from 'express';
-import cors from 'cors';
+import cors from 'cors';//habilitar CORS (Cross-Origin Resource Sharing) en la API de Express.
 import db from './config/db.js';
 import './models/index.js';
 import authRoutes from './routes/authRoutes.js'
