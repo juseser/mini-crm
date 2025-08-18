@@ -6,15 +6,15 @@ const router = express.Router();
 router.use(auth);// Esto aplica `auth` a todas las rutas de este router
 
 // LISTAR mis proyectos
-router.get('/', listProjects );
+router.get( '/', listProjects );
 
 // CREAR
-router.post('/', createProject );
+router.post( '/', createProject );
 
 // ACTUALIZAR
-router.patch('/:id', updateProject );
+router.patch( '/:id', updateProject );
 
 // ELIMINAR
-router.delete('/:id', deleteProject );
+router.delete( '/:id', deleteProject );
 
 export default router;

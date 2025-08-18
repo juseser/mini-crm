@@ -6,15 +6,15 @@ const router = express.Router();
 router.use(auth);
 
 //LISTAR TAREAS
-router.get('/', listTaskByProject );
+router.get( '/', listTaskByProject );
 
 // CREAR
-router.post('/', createTask );
+router.post( '/', createTask );
 
 // ACTUALIZAR
-router.patch('/:id', updateTask );
+router.patch( '/:id', updateTask );
 
 // ELIMINAR
-router.delete('/:id', deleteTask );
+router.delete( '/:id', deleteTask );
 
 export default router;

@@ -4,10 +4,10 @@ import { info, login, registerUser } from '../controllers/authControllers.js';
 
 const router = express.Router() 
 
-router.post('/register', registerUser);
+router.post( '/register', registerUser );
 
-router.post('/login', login);
+router.post( '/login', login );
 
-router.get('/me', authMiddleware, info);
+router.get( '/me', authMiddleware, info );
 
 export default router;
