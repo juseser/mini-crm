@@ -9,15 +9,20 @@ export function useAuth() {
   const login = async (email, password) => {
     try {
       const res = await api().post("/auth/login", { email, password });
-      if (!res.ok) return false;
-      const data = await res.json();
-      localStorage.setItem("token", data.token);
-      setToken(data.token);
-      // navega a Projects luego de iniciar sesión
+      const body = await res.json().catch(()=> ({}));
+      if (!res.ok) {
+        // Siempre devolvemos array `errors`
+        const errors = Array.isArray(body?.errors)
+          ? body.errors
+          : [{ msg: body?.message || "Error al iniciar sesión" }];
+        return { ok: false, errors };
+      }
+      localStorage.setItem("token", body.token);
+      setToken(body.token);
       window.location.href = "/projects";
-      return true;
+      return { ok: true };
     } catch {
-      return false;
+      return { ok: false, errors: [{ msg: "Error de red" }] };
     }
   };
 
@@ -25,9 +30,17 @@ export function useAuth() {
   const register = async (name, email, password) => {
     try {
       const res = await api().post("/auth/register", { name, email, password });
-      return res.ok;
+      const body = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        // Normaliza a array de errores
+        const errors = Array.isArray(body.errors)
+          ? body.errors
+          : [{ msg: body.message || "No se pudo registrar" }];
+        return { ok: false, errors };
+      }
+      return { ok: true };
     } catch {
-      return false;
+      return { ok: false, errors: [{ msg: "Error de red" }] };
     }
   };
 
