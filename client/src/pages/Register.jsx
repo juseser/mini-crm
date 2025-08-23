@@ -1,48 +1,51 @@
 import { useState } from "react";
-import { useAuth } from "../hooks/useAuth";
+import useAuth  from "../hooks/useAuth.js";
 
-function mapErrorsByField(arr = []) {
-  const out = {};
-  arr.forEach(e => { if (e.param) out[e.param] = e.msg; });
-  return out;
+const mapErrorsByField = (arr = []) => {
+  const errors = {};
+  arr.forEach((error) => { //Recorremos el array de errrores(arr) y lo convertimos a un objeto por campo
+    const field = error.param || error.path;
+    if (field) errors[field] = error.msg;
+  }); 
+  return errors;
 }
 
-export default function Register() {
+const Register = () => {
   const { register } = useAuth();
-  const [form, setForm] = useState({ name:"", email:"", password:"" });
-  const [ok, setOk] = useState(false);
-  const [fieldErrors, setFieldErrors] = useState({}); // { name?:string, email?:string, password?:string }
-  const [serverList, setServerList] = useState([]);   // [{ msg, param? }, ...]
+  const [form, setForm] = useState({ name:"", email:"", password:"" });//estado para cargar los datos de los inputs
+  const [ok, setOk] = useState(false);//estado para mostrar el mensaje de usuario creado con exito
+  const [fieldErrors, setFieldErrors] = useState({}); //state para cargar los errores
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setOk(false);
-    setFieldErrors({});
-    setServerList([]);
+    setOk(false);//ocultamos el mensaje de usuario registrado con exito
+    setFieldErrors({});//Limpia errores por campo ANTES de mandar la petición (así no quedan mensajes viejos visibles mientras esperas la respuesta)
+   
+    const resp = await register(form.name, form.email, form.password);//pasamos los valores al api
 
-    const r = await register(form.name, form.email, form.password);
-
-    if (!r.ok) {
-      setFieldErrors(mapErrorsByField(r.errors));
-      setServerList(r.errors); // aquí vendrá también el 409 "Email ya registrado"
+    if (!resp.ok) {
+      setFieldErrors(mapErrorsByField(resp.errors));
       return;
     }
 
-    setOk(true);
-    setForm({ name:"", email:"", password:"" });
+    setOk(true);//mostramos el mensaje de usuario registrado con exito
+    setForm({ name:"", email:"", password:"" });//reseteamos el valor de los campos
   };
+
+  //Funcion que dispara el state para cargar los datos en los inputs
+  const onInputChange=({ target })=>{
+    const { name, value } = target; //destructuring
+    setForm((prev) => ({ //estado anterior
+      ...prev,
+      [name]: value
+    }));
+  }
 
   return (
     <div className="max-w-md mx-auto">
       <h1 className="text-2xl font-bold mb-4">Crear cuenta</h1>
 
-      {/* Errores generales del backend (incluye 409 email ya registrado) */}
-      {serverList.length > 0 && (
-        <ul className="mb-3 text-sm text-red-600 list-disc list-inside">
-          {serverList.map((e,i) => <li key={i}>{e.msg}</li>)}
-        </ul>
-      )}
-      {ok && (
+      {ok && (// si ok= true entonces ...
         <p className="text-green-600 text-sm mb-3">
           Usuario creado con éxito. Ahora puedes iniciar sesión.
         </p>
@@ -56,8 +59,8 @@ export default function Register() {
             placeholder="Nombre"
             className={`border rounded px-3 py-2 w-full ${fieldErrors.name ? 'border-red-500' : ''}`}
             value={form.name}
-            onChange={e=>setForm(f=>({...f, name:e.target.value}))}
-            aria-invalid={!!fieldErrors.name}
+            onChange={onInputChange}
+            aria-invalid={!!fieldErrors.name}//si hay error en name: true !!=convierte en booleano
           />
           {fieldErrors.name && <p className="text-xs text-red-600 mt-1">{fieldErrors.name}</p>}
         </div>
@@ -69,7 +72,7 @@ export default function Register() {
             placeholder="Correo"
             className={`border rounded px-3 py-2 w-full ${fieldErrors.email ? 'border-red-500' : ''}`}
             value={form.email}
-            onChange={e=>setForm(f=>({...f, email:e.target.value}))}
+            onChange={onInputChange}
             aria-invalid={!!fieldErrors.email}
           />
           {fieldErrors.email && <p className="text-xs text-red-600 mt-1">{fieldErrors.email}</p>}
@@ -82,7 +85,7 @@ export default function Register() {
             placeholder="Contraseña"
             className={`border rounded px-3 py-2 w-full ${fieldErrors.password ? 'border-red-500' : ''}`}
             value={form.password}
-            onChange={e=>setForm(f=>({...f, password:e.target.value}))}
+            onChange={onInputChange}
             aria-invalid={!!fieldErrors.password}
           />
           {fieldErrors.password && <p className="text-xs text-red-600 mt-1">{fieldErrors.password}</p>}
@@ -98,3 +101,5 @@ export default function Register() {
     </div>
   );
 }
+
+export default Register;

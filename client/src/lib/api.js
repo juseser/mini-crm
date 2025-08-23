@@ -1,4 +1,4 @@
-export function api(token) {
+const api = (token) => {
   const base = import.meta.env.VITE_API_URL;
   const headers = { 'Content-Type': 'application/json' };
   if (token) headers.Authorization = `Bearer ${token}`;
@@ -10,3 +10,5 @@ export function api(token) {
     del:  (p) => fetch(base + p, { method: 'DELETE', headers })
   };
 }
+
+export default api;

@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { useAuth } from "../hooks/useAuth";
-import { api } from "../lib/api";
+import useAuth  from "../hooks/useAuth.js";
+import api  from "../lib/api.js";
 
-export default function Dashboard() {
+const Dashboard = () => {
   const { token, logout } = useAuth();
   const [me, setMe] = useState(null);
   const [err, setErr] = useState("");
@@ -57,3 +57,5 @@ export default function Dashboard() {
     </div>
   );
 }
+
+export default Dashboard
