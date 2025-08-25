@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import useAuth  from "../hooks/useAuth.js";
 import api  from "../lib/api.js";
@@ -41,12 +42,12 @@ const Dashboard = () => {
       )}
 
       <div className="flex gap-2">
-        <a
-          href="/projects"
+        <Link
+          to="/projects"
           className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded"
         >
           Ir a Projects
-        </a>
+        </Link>
         <button
           onClick={logout}
           className="px-4 py-2 rounded border"

@@ -1,9 +1,11 @@
+import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import api from "../lib/api.js";// Importa la función api → es un helper que centraliza las llamadas al backend
 // (ej: api().post("/auth/login", {...}) en lugar de usar fetch directamente)
 
 // Este es un custom hook para manejar la autenticación
 const useAuth = () => {
+  const navigate = useNavigate(); // hook de React Router
   const [token, setToken] = useState(localStorage.getItem("token"));//Guardamos el token que viene de node en la variable token
 
   // ----------- FUNCIÓN DE LOGIN -----------
@@ -23,7 +25,7 @@ const useAuth = () => {
 
       localStorage.setItem("token", body.token);// Guarda el token en localStorage (persistencia al refrescar la página)
       setToken(body.token);// Actualiza el estado de token dentro del hook
-      window.location.href = "/projects";// Redirige al usuario al listado de proyectos
+      navigate("/projects");// Redirige al usuario al listado de proyectos
       return { ok: true };// Devuelve éxito como un objeto
     } catch {
       return { ok: false, errors: [{ msg: "Error de red" }] };// Si hubo error de red o excepción
