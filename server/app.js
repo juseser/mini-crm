@@ -8,17 +8,27 @@ import taskRoutes from './routes/taskRoutes.js';
 
 const app = express();// Crea una aplicación de Express (el servidor principal
 
-// CORS — MODO DEBUG (eco del origin que llegue)
-app.use(cors({
-  origin: true,                          // hace echo del Origin que llega
-  credentials: false,                    // no usas cookies
-  methods: ['GET','POST','PATCH','DELETE','OPTIONS'],
-  allowedHeaders: ['Content-Type','Authorization'],
-  optionsSuccessStatus: 204
-}));
+// --- CORS + preflight manual (Express 5 safe) ---
+const allow = new Set(['http://localhost:5173', process.env.CLIENT_URL].filter(Boolean));
 
-// Responder TODOS los preflights
-app.options('*', cors());
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
+
+  // Permite Postman/cURL (sin origin) y los de la whitelist
+  if (!origin || allow.has(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin || '*');
+    res.setHeader('Vary', 'Origin');
+    res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PATCH,DELETE,OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type,Authorization');
+    // res.setHeader('Access-Control-Allow-Credentials', 'false'); // no usas cookies
+
+    if (req.method === 'OPTIONS') return res.sendStatus(204); // preflight OK
+    return next();
+  }
+
+  // Origin NO permitido
+  return res.status(403).send('Not allowed by CORS');
+});
 
 app.use(express.json());// Permite a Express entender y procesar datos en formato JSON que vengan en el body de las peticiones (req.body)
 
