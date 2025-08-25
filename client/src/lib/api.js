@@ -1,5 +1,5 @@
 const api = (token) => {
-  const base = import.meta.env.VITE_API_URL;
+  const base = import.meta.env.VITE_API_URL.replace(/\/+$/, '');
   const headers = { 'Content-Type': 'application/json' };
   if (token) headers.Authorization = `Bearer ${token}`;
 
