@@ -8,6 +8,20 @@ Aplicación **Fullstack** sencilla tipo CRM que permite:
 
 ---
 
+## 🌐 Enlace en Producción
+
+🔗 [https://mini-crm-1-x5jd.onrender.com/](https://mini-crm-1-x5jd.onrender.com/)
+
+---
+
+### 🚀 Despliegue
+
+- **Backend** desplegado en [Render](https://render.com/)
+- **Frontend** desplegado en [Render](https://render.com/)
+- **Base de datos MySQL** en la nube proporcionada por [Filess.io](https://filess.io/)
+
+---
+
 ## 🚀 Tecnologías usadas
 ### Backend (server/)
 - Node.js + Express  
@@ -22,32 +36,7 @@ Aplicación **Fullstack** sencilla tipo CRM que permite:
 - Fetch API  
 
 ### Extras
-- Postman (colección incluida)  
-
----
-
-## 📂 Estructura del proyecto
-```
-mini-crm/
-│── client/        # Frontend (React + Vite)
-│   ├── src/
-│   │   ├── pages/ (Login, Register, Dashboard, Projects, ProjectTasks)
-│   │   ├── hooks/ (useAuth.js)
-│   │   ├── main.jsx
-│   │   └── index.css
-│   └── .env.example
-│
-│── server/        # Backend (Node + Express)
-│   ├── models/    (User, Project, Task)
-│   ├── routes/    (authRoutes, projectRoutes, taskRoutes)
-│   ├── middleware/auth.js
-│   ├── config/db.js
-│   └── app.js
-│   └── .env.example
-│
-│── Mini CRM.postman_collection.json   # Colección lista para probar API
-│── README.md
-```
+- Postman (colección incluida) 
 
 ---
 
