@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import useAuth  from "../hooks/useAuth.js";
 import api  from "../lib/api.js";
@@ -159,7 +160,12 @@ const Projects = () => {
                     {project.description && <div className="text-sm text-slate-600">{project.description}</div>}{/*Esto para que es?*/}
                   </div>
                   <div className="flex gap-2">
-                    <a href={`/projects/${project.id}/tasks`} className="px-3 py-2 rounded bg-slate-800 text-white">Tareas</a>{/*Btn para crear Tareas*/}
+                    <Link 
+                      to={`/projects/${project.id}/tasks`} 
+                      className="px-3 py-2 rounded bg-slate-800 text-white"
+                    >
+                      Tareas
+                    </Link>{/*Btn para listar las Tareas del proyecto*/}
                     {/*Btn editar*/}
                     <button
                       className="px-3 py-2 rounded bg-indigo-600 text-white"
