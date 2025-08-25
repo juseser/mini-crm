@@ -7,7 +7,18 @@ import projectRoutes from './routes/projectRoutes.js';
 import taskRoutes from './routes/taskRoutes.js';
 
 const app = express();// Crea una aplicación de Express (el servidor principal
-app.use(cors());// Habilita CORS (Cross-Origin Resource Sharing) para que el backend pueda recibir peticiones desde un frontend en otro dominio/puerto
+
+// --- CORS: permite front local y el front desplegado ---
+const allowed = [
+  'http://localhost:5173',     // Vite dev
+  process.env.CLIENT_URL       // Front en Render (ej: https://mini-crm.onrender.com)
+].filter(Boolean);
+
+app.use(cors({
+  origin: allowed,
+  credentials: false
+}));// Habilita CORS (Cross-Origin Resource Sharing) para que el backend pueda recibir peticiones desde un frontend en otro dominio/puerto
+
 app.use(express.json());// Permite a Express entender y procesar datos en formato JSON que vengan en el body de las peticiones (req.body)
 
 app.use('/auth', authRoutes); 
