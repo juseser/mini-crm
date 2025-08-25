@@ -39,7 +39,7 @@ app.use('/tasks', taskRoutes);
 //Conexion a la base de datos
 try {
     await db.authenticate();
-    await db.sync({ force: true });
+    await db.sync();
     console.log('Conectado a la BD')
 } catch (error) {
     console.log(error)
