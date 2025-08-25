@@ -1,5 +1,5 @@
 import { useState } from "react";
-import useAuth  from "../hooks/useAuth.js";
+import { useAuth } from "../context/AuthContext.jsx";
 
 const mapErrorsByField = (arr = []) => {
   const errors = {};

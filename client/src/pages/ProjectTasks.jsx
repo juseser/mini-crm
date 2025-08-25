@@ -1,6 +1,6 @@
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
-import useAuth  from "../hooks/useAuth.js";
+import { useAuth } from "../context/AuthContext.jsx";
 import api  from "../lib/api.js";
 
 const mapErrorsByField = (arr = []) => {
@@ -104,7 +104,13 @@ const ProjectTasks = () => {
 
     return (
       <div>
-        <a href="/projects" className="text-sm text-indigo-700 underline">← Volver</a>
+        <Link
+          to={"/projects"}
+          className="text-sm text-indigo-700 underline"
+        >
+          ← Volver
+        </Link>
+        
         <h1 className="text-2xl font-bold mb-4">Tareas del proyecto {id}</h1>
 
         {okMsg && <p className="text-green-600 text-sm mb-3">{okMsg}</p>}
